@@ -12,6 +12,11 @@ RUN pip3 install scikit-learn jupyter openpyxl pypdf2
 RUN mkdir /etc/service/jupyter
 RUN chmod 755 /jupyter
 
+RUN mkdir -p /home/jupyter/.ipython/profile_default/static/custom
+ADD custom.css /home/jupyter/.ipython/profile_default/static/custom/custom.css
+ADD custom.js /home/jupyter/.ipython/profile_default/static/custom/custom.js
+RUN chown -R jupyter /home/jupyter/.ipython
+
 ADD jupyter.sh /etc/service/jupyter/run
 RUN chmod +x /etc/service/jupyter/run
 
