@@ -5,7 +5,7 @@ Docker image containing Jupyter and other python packages for scientific researc
 ## Including Packages
 
 * lxml
-* bs4 (Beautiful Soup 4)
+* beautifulsoup4
 * scipy
 * numpy
 * pandas
@@ -13,6 +13,7 @@ Docker image containing Jupyter and other python packages for scientific researc
 * pypdf2
 * scikit-learn
 * matplotlib
+* requests
 * jupyter
 
 ## Build
@@ -24,7 +25,6 @@ docker build --tag jupyter .
 ## Run
 
 1. Build or pull the image
-
 ```
 docker pull chiwanpark/jupyter
 ```
@@ -32,7 +32,6 @@ docker pull chiwanpark/jupyter
 1. Before running the jupyter image, you should create configuration file (`jupyter_notebook_config.py`) to data volume (mapped path to `/jupyter` in container).
 
 1. Run with following command:
-
 ```
 docker run --name <CONTAINER_NAME> -d -p <DEST_PORT>:8888 -v <VOLUME_PATH>:/jupyter chiwanpark/jupyter
 ```
