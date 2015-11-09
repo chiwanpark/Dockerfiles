@@ -7,7 +7,7 @@ VOLUME ["/jupyter"]
 RUN useradd -d /home/jupyter -m jupyter
 
 RUN apt-get -y update && apt-get -y install libblas-dev liblapack-dev libatlas-base-dev gfortran python3-pip libfreetype6-dev python3.4-dev libxml2-dev libxslt1-dev pkg-config
-RUN pip3 install numpy scipy matplotlib pandas lxml beautifulsoup4 scikit-learn jupyter openpyxl pypdf2 requests
+RUN pip3 install numpy scipy matplotlib pandas lxml beautifulsoup4 scikit-learn jupyter openpyxl pypdf2 requests xlrd
 
 RUN mkdir /etc/service/jupyter
 RUN chmod 755 /jupyter

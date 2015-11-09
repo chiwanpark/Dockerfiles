@@ -10,6 +10,7 @@ Docker image containing Jupyter and other python packages for scientific researc
 * numpy
 * pandas
 * openpyxl
+* xlrd
 * pypdf2
 * scikit-learn
 * matplotlib
