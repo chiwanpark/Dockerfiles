@@ -16,8 +16,3 @@ VOLUMES=( "/opt/hadoop-namenode" "/mnt/dfs1" "/mnt/dfs2" "/mnt/dfs3" )
 
 # directory setting for master home
 MASTER_HOME="/root"
-
-# google cloud storage setting
-GCS_PROJECT_ID=
-GCS_AUTH_EMAIL=
-GCH_AUTH_KEYFILE=

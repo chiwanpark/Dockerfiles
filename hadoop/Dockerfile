@@ -2,7 +2,7 @@ FROM phusion/baseimage:0.9.18
 MAINTAINER Chiwan Park <chiwanpark@icloud.com>
 
 CMD ["/sbin/my_init"]
-VOLUME ["/hadoop-data", "/root"]
+VOLUME ["/hadoop-data", "/master-home"]
 
 # Install Oracle JDK 8
 RUN add-apt-repository -y ppa:webupd8team/java && \
@@ -19,10 +19,6 @@ RUN wget http://apache.mirror.cdnetworks.com/hadoop/common/hadoop-2.7.2/hadoop-2
     mv hadoop-2.7.2 /usr/local/hadoop && \
     rm hadoop-2.7.2.tar.gz
 
-# Install third-party libraries
-RUN mkdir /usr/local/hadoop/third-party && \
-    wget https://storage.googleapis.com/hadoop-lib/gcs/gcs-connector-latest-hadoop2.jar -P /usr/local/hadoop/third-party/
-
 # Configure common environment variable
 ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle
 ENV HADOOP_HOME=/usr/local/hadoop
@@ -30,7 +26,6 @@ ENV HADOOP_MAPRED_HOME=/usr/local/hadoop
 ENV HADOOP_COMMON_HOME=/usr/local/hadoop
 ENV HADOOP_HDFS_HOME=/usr/local/hadoop
 ENV YARN_HOME=/usr/local/hadoop
-ENV HADOOP_CLASSPATH=/usr/local/hadoop/third-party
 ENV HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib/native
 ENV HADOOP_OPTS="-Djava.library.path=/usr/local/hadoop/lib"
 ENV HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop

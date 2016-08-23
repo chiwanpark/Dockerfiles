@@ -24,4 +24,4 @@ done
 
 # create master container
 echo "Starting Hadoop master node"
-docker run -itd --env DAEMON="master" --volume="$MASTER_HOME:/root" --volume="${VOLUMES[0]}:/hadoop-data" --net="$NETWORK" --name hadoop-master --hostname hadoop-master chiwanpark/hadoop:$VERSION
+docker run -itd --env DAEMON="master" --volume="${MASTER_HOME}:/master-home" --volume="${VOLUMES[0]}:/hadoop-data" --net="$NETWORK" --name hadoop-master --hostname hadoop-master chiwanpark/hadoop:$VERSION
