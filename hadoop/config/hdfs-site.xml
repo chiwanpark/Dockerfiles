@@ -33,6 +33,17 @@
   </property>
 
   <property>
+    <!-- HDFS short-circuit local read -->
+    <name>dfs.client.read.shortcircuit</name>
+    <value>true</value>
+  </property>
+
+  <property>
+    <name>dfs.domain.socket.path</name>
+    <value>/hadoop-data/dn-socket</value>
+  </property>
+
+  <property>
     <!-- DFS Block Size = 128MB -->
     <name>dfs.blocksize</name>
     <value>134217728</value>

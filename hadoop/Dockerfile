@@ -8,16 +8,27 @@ VOLUME ["/hadoop-data", "/master-home"]
 RUN add-apt-repository -y ppa:webupd8team/java && \
     apt-get update && \
     echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-    apt-get install -y oracle-java8-installer oracle-java8-set-default
+    apt-get install -y oracle-java8-installer oracle-java8-set-default build-essential libssl-dev pkgconf cmake libprotobuf8 protobuf-compiler bzip2 libbz2-dev libsnappy1 libsnappy-dev 
 
-# Clean APT cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Install Maven 3.3+
+RUN wget http://apache.mirror.cdnetworks.com/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz && \
+    tar -xzf apache-maven-3.3.9-bin.tar.gz && \
+    mv apache-maven-3.3.9 /tmp/maven && \
+    rm apache-maven-3.3.9-bin.tar.gz
 
 # Install Hadoop 2.7.2
-RUN wget http://apache.mirror.cdnetworks.com/hadoop/common/hadoop-2.7.2/hadoop-2.7.2.tar.gz && \
-    tar -xzvf hadoop-2.7.2.tar.gz && \
-    mv hadoop-2.7.2 /usr/local/hadoop && \
-    rm hadoop-2.7.2.tar.gz
+RUN wget http://apache.mirror.cdnetworks.com/hadoop/common/hadoop-2.7.2/hadoop-2.7.2-src.tar.gz && \
+    tar -xzf hadoop-2.7.2-src.tar.gz && \
+    mv hadoop-2.7.2-src /tmp/hadoop && \
+    rm hadoop-2.7.2-src.tar.gz && \
+    cd /tmp/hadoop && \
+    /tmp/maven/bin/mvn package -DskipTests -Dtar -Pdist,native && \
+    mv /tmp/hadoop/hadoop-dist/target/hadoop-2.7.2 /usr/local/hadoop
+
+# Remove unnecessary packages && apt cache
+RUN apt-get remove -y pkgconf cmake build-essential && \
+    apt-get autoremove -y && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Configure common environment variable
 ENV JAVA_HOME=/usr/lib/jvm/java-8-oracle
@@ -27,7 +38,7 @@ ENV HADOOP_COMMON_HOME=/usr/local/hadoop
 ENV HADOOP_HDFS_HOME=/usr/local/hadoop
 ENV YARN_HOME=/usr/local/hadoop
 ENV HADOOP_COMMON_LIB_NATIVE_DIR=/usr/local/hadoop/lib/native
-ENV HADOOP_OPTS="-Djava.library.path=/usr/local/hadoop/lib"
+ENV HADOOP_OPTS="-Djava.library.path=/usr/local/hadoop/lib/native"
 ENV HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop
 ENV PATH=$PATH:/usr/local/hadoop/bin
 
@@ -53,5 +64,3 @@ RUN mv /tmp/ssh_config ~/.ssh/config && \
     mv /tmp/mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml && \
     mv /tmp/slaves $HADOOP_HOME/etc/hadoop/slaves && \
     sed -i -E "s#export JAVA_HOME=.+#export JAVA_HOME=$JAVA_HOME#g" $HADOOP_HOME/etc/hadoop/hadoop-env.sh
-
-
